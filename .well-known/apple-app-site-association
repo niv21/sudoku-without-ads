@@ -1,0 +1,19 @@
+{
+  "applinks": {
+    "apps": [],
+    "details": [
+      {
+        "appID": "TEAMID.com.anonymous.Sudoku",
+        "paths": [
+          "/share*",
+          "/share/*"
+        ]
+      }
+    ]
+  },
+  "webcredentials": {
+    "apps": [
+      "TEAMID.com.anonymous.Sudoku"
+    ]
+  }
+}

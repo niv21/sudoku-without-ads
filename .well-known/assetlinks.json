@@ -1,0 +1,10 @@
+[{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "com.anonymous.Sudoku",
+    "sha256_cert_fingerprints": [
+      "11:1B:E2:15:41:F0:D3:A9:D0:68:BB:ED:CD:27:91:52:FF:FB:09:E8:37:58:EB:40:10:DB:12:2B:63:88:93:28"
+    ]
+  }
+}]
