@@ -135,33 +135,35 @@
     </div>
 
     <script>
-        // Initialize the page
-        function initializePage() {
-            // Get game state from URL
-            const urlParams = new URLSearchParams(window.location.search);
-            const gameState = urlParams.get('game');
-            
-            if (!gameState) {
-                showStatus('No game data found in the link.', 'error');
-                return;
-            }
-
-        // Create deep link URLs
-        appScheme = 'sudokuapp://share?game=' + gameState;
-        playStoreUrl = 'https://play.google.com/store/apps/details?id=com.anonymous.Sudoku';
-        appStoreUrl = 'https://apps.apple.com/app/id123456789'; // Replace with actual App Store ID
-        
-        // For development, use the Universal Links URL instead of custom scheme
-        universalLinkUrl = window.location.href;
-        
-        // Set up buttons
-        document.getElementById('openApp').href = universalLinkUrl;
-        document.getElementById('downloadApp').href = getDownloadUrl();
-        
-        }
-        
         // Global variables
         let appScheme, playStoreUrl, appStoreUrl, universalLinkUrl;
+        
+        // Utility functions
+        function showStatus(message, type) {
+            const statusEl = document.getElementById('status');
+            statusEl.textContent = message;
+            statusEl.className = 'status ' + type;
+            statusEl.style.display = 'block';
+        }
+        
+        function showLoading() {
+            document.getElementById('loading').style.display = 'block';
+        }
+        
+        function hideLoading() {
+            document.getElementById('loading').style.display = 'none';
+        }
+        
+        function getDownloadUrl() {
+            const userAgent = navigator.userAgent.toLowerCase();
+            if (userAgent.includes('android')) {
+                return playStoreUrl;
+            } else if (userAgent.includes('iphone') || userAgent.includes('ipad')) {
+                return appStoreUrl;
+            } else {
+                return playStoreUrl; // Default to Play Store
+            }
+        }
         
         // Try to open the app automatically
         function tryOpenApp() {
@@ -199,32 +201,28 @@
             }, 3000);
         }
         
-        function getDownloadUrl() {
-            const userAgent = navigator.userAgent.toLowerCase();
-            if (userAgent.includes('android')) {
-                return playStoreUrl;
-            } else if (userAgent.includes('iphone') || userAgent.includes('ipad')) {
-                return appStoreUrl;
-            } else {
-                return playStoreUrl; // Default to Play Store
+        // Initialize the page
+        function initializePage() {
+            // Get game state from URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const gameState = urlParams.get('game');
+            
+            if (!gameState) {
+                showStatus('No game data found in the link.', 'error');
+                return;
             }
-        }
-        
-        function showStatus(message, type) {
-            const statusEl = document.getElementById('status');
-            statusEl.textContent = message;
-            statusEl.className = 'status ' + type;
-            statusEl.style.display = 'block';
-        }
-        
-        function showLoading() {
-            document.getElementById('loading').style.display = 'block';
-        }
-        
-        function hideLoading() {
-            document.getElementById('loading').style.display = 'none';
-        }
-        
+
+            // Create deep link URLs
+            appScheme = 'sudokuapp://share?game=' + gameState;
+            playStoreUrl = 'https://play.google.com/store/apps/details?id=com.anonymous.Sudoku';
+            appStoreUrl = 'https://apps.apple.com/app/id123456789'; // Replace with actual App Store ID
+            
+            // For development, use the Universal Links URL instead of custom scheme
+            universalLinkUrl = window.location.href;
+            
+            // Set up buttons
+            document.getElementById('openApp').href = universalLinkUrl;
+            document.getElementById('downloadApp').href = getDownloadUrl();
         }
         
         // Auto-attempt to open the app when page loads
