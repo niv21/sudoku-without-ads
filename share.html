@@ -12,8 +12,8 @@
     <meta property="og:url" content="">
     <meta property="og:image" content="/assets/images/sudoku-icon.svg">
     
-    <!-- iOS Universal Links -->
-    <meta name="apple-itunes-app" content="app-id=123456789, app-argument=sudokuapp://share">
+    <!-- iOS Universal Links - Commented out for Android-only version -->
+    <!-- <meta name="apple-itunes-app" content="app-id=123456789, app-argument=sudokuapp://share"> -->
     
     <!-- Android App Links -->
     <meta name="google-play-app" content="app-id=com.anonymous.Sudoku">
@@ -155,14 +155,18 @@
         }
         
         function getDownloadUrl() {
-            const userAgent = navigator.userAgent.toLowerCase();
-            if (userAgent.includes('android')) {
-                return playStoreUrl;
-            } else if (userAgent.includes('iphone') || userAgent.includes('ipad')) {
-                return appStoreUrl;
-            } else {
-                return playStoreUrl; // Default to Play Store
-            }
+            // Android-only version - always return Play Store URL
+            return playStoreUrl;
+            
+            // Commented out iOS logic for Android-only version:
+            // const userAgent = navigator.userAgent.toLowerCase();
+            // if (userAgent.includes('android')) {
+            //     return playStoreUrl;
+            // } else if (userAgent.includes('iphone') || userAgent.includes('ipad')) {
+            //     return appStoreUrl;
+            // } else {
+            //     return playStoreUrl; // Default to Play Store
+            // }
         }
         
         // Try to open the app automatically
@@ -215,7 +219,7 @@
             // Create deep link URLs
             appScheme = 'sudokuapp://share?game=' + gameState;
             playStoreUrl = 'https://play.google.com/store/apps/details?id=com.anonymous.Sudoku';
-            appStoreUrl = 'https://apps.apple.com/app/id123456789'; // Replace with actual App Store ID
+            // appStoreUrl = 'https://apps.apple.com/app/id123456789'; // Commented out for Android-only version
             
             // For development, use the Universal Links URL instead of custom scheme
             universalLinkUrl = window.location.href;
@@ -241,8 +245,8 @@
         
         document.getElementById('downloadApp').addEventListener('click', (e) => {
             e.preventDefault();
-            // For development, show a message since the app isn't published yet
-            showStatus('This is a development version. The app is not yet published to the Play Store.', 'info');
+            // Redirect to the appropriate app store
+            window.location.href = getDownloadUrl();
         });
     </script>
 </body>
