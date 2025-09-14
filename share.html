@@ -149,8 +149,11 @@
         const playStoreUrl = 'https://play.google.com/store/apps/details?id=com.anonymous.Sudoku';
         const appStoreUrl = 'https://apps.apple.com/app/id123456789'; // Replace with actual App Store ID
         
+        // For development, use the Universal Links URL instead of custom scheme
+        const universalLinkUrl = window.location.href;
+        
         // Set up buttons
-        document.getElementById('openApp').href = appScheme;
+        document.getElementById('openApp').href = universalLinkUrl;
         document.getElementById('downloadApp').href = getDownloadUrl();
         
         // Try to open the app automatically
@@ -224,12 +227,14 @@
         // Handle button clicks
         document.getElementById('openApp').addEventListener('click', (e) => {
             e.preventDefault();
-            tryOpenApp();
+            // Try to open the app using the Universal Links URL
+            window.location.href = universalLinkUrl;
         });
         
         document.getElementById('downloadApp').addEventListener('click', (e) => {
             e.preventDefault();
-            window.open(getDownloadUrl(), '_blank');
+            // For development, show a message since the app isn't published yet
+            showStatus('This is a development version. The app is not yet published to the Play Store.', 'info');
         });
     </script>
 </body>
