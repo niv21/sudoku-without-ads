@@ -135,14 +135,16 @@
     </div>
 
     <script>
-        // Get game state from URL
-        const urlParams = new URLSearchParams(window.location.search);
-        const gameState = urlParams.get('game');
-        
-        if (!gameState) {
-            showStatus('No game data found in the link.', 'error');
-            return;
-        }
+        // Initialize the page
+        function initializePage() {
+            // Get game state from URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const gameState = urlParams.get('game');
+            
+            if (!gameState) {
+                showStatus('No game data found in the link.', 'error');
+                return;
+            }
 
         // Create deep link URLs
         const appScheme = 'sudokuapp://share?game=' + gameState;
@@ -218,8 +220,11 @@
             document.getElementById('loading').style.display = 'none';
         }
         
+        }
+        
         // Auto-attempt to open the app when page loads
         window.addEventListener('load', () => {
+            initializePage();
             // Small delay to ensure page is fully loaded
             setTimeout(tryOpenApp, 500);
         });
