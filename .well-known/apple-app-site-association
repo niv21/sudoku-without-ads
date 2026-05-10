@@ -3,7 +3,7 @@
     "apps": [],
     "details": [
       {
-        "appID": "TEAMID.com.anonymous.Sudoku",
+        "appID": "69842922YB.niv.Sudoku",
         "paths": [
           "/share*",
           "/share/*"
@@ -13,7 +13,7 @@
   },
   "webcredentials": {
     "apps": [
-      "TEAMID.com.anonymous.Sudoku"
+      "69842922YB.niv.Sudoku"
     ]
   }
 }

@@ -12,8 +12,9 @@
     <meta property="og:url" content="">
     <meta property="og:image" content="/assets/images/sudoku-icon.svg">
     
-    <!-- iOS Universal Links - Commented out for Android-only version -->
-    <!-- <meta name="apple-itunes-app" content="app-id=123456789, app-argument=sudokuapp://share"> -->
+    <!-- iOS Universal Links -->
+    <!-- TODO: replace 123456789 with the real App Store ID once the iOS app is published -->
+    <meta name="apple-itunes-app" content="app-id=123456789, app-argument=sudokuapp://share">
     
     <!-- Android App Links -->
     <meta name="google-play-app" content="app-id=com.anonymous.Sudoku">
@@ -154,19 +155,22 @@
             document.getElementById('loading').style.display = 'none';
         }
         
+        function isIos() {
+            const ua = navigator.userAgent.toLowerCase();
+            // iPadOS 13+ reports as Mac with touch support
+            const isIpadOs = navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1;
+            return ua.includes('iphone') || ua.includes('ipad') || ua.includes('ipod') || isIpadOs;
+        }
+
         function getDownloadUrl() {
-            // Android-only version - always return Play Store URL
+            if (isIos()) {
+                return appStoreUrl;
+            }
+            const ua = navigator.userAgent.toLowerCase();
+            if (ua.includes('android')) {
+                return playStoreUrl;
+            }
             return playStoreUrl;
-            
-            // Commented out iOS logic for Android-only version:
-            // const userAgent = navigator.userAgent.toLowerCase();
-            // if (userAgent.includes('android')) {
-            //     return playStoreUrl;
-            // } else if (userAgent.includes('iphone') || userAgent.includes('ipad')) {
-            //     return appStoreUrl;
-            // } else {
-            //     return playStoreUrl; // Default to Play Store
-            // }
         }
         
         // Try to open the app automatically
@@ -219,7 +223,8 @@
             // Create deep link URLs
             appScheme = 'sudokuapp://share?game=' + gameState;
             playStoreUrl = 'https://play.google.com/store/apps/details?id=com.anonymous.Sudoku';
-            // appStoreUrl = 'https://apps.apple.com/app/id123456789'; // Commented out for Android-only version
+            // TODO: replace id123456789 with the real App Store ID once the iOS app is published
+            appStoreUrl = 'https://apps.apple.com/app/id123456789';
             
             // For development, use the Universal Links URL instead of custom scheme
             universalLinkUrl = window.location.href;
