@@ -176,31 +176,31 @@
         // Try to open the app automatically
         function tryOpenApp() {
             showLoading();
-            
-            // Create a hidden iframe to attempt the deep link
-            const iframe = document.createElement('iframe');
-            iframe.style.display = 'none';
-            iframe.src = appScheme;
-            document.body.appendChild(iframe);
-            
-            // Remove iframe after a short delay
-            setTimeout(() => {
-                document.body.removeChild(iframe);
-            }, 1000);
-            
-            // Check if the app opened
+
             let appOpened = false;
             const startTime = Date.now();
-            
-            // Listen for page visibility changes
+
             document.addEventListener('visibilitychange', () => {
-                if (document.hidden && Date.now() - startTime < 2000) {
+                if (document.hidden && Date.now() - startTime < 2500) {
                     appOpened = true;
                     hideLoading();
                 }
             });
-            
-            // Show fallback after 3 seconds
+
+            if (isIos()) {
+                // iOS Safari blocks custom-scheme launches from iframes; window.location works.
+                window.location.href = appScheme;
+            } else {
+                // Android: iframe avoids leaving an error page if the app is not installed.
+                const iframe = document.createElement('iframe');
+                iframe.style.display = 'none';
+                iframe.src = appScheme;
+                document.body.appendChild(iframe);
+                setTimeout(() => {
+                    if (iframe.parentNode) document.body.removeChild(iframe);
+                }, 1000);
+            }
+
             setTimeout(() => {
                 if (!appOpened) {
                     hideLoading();
@@ -244,8 +244,8 @@
         // Handle button clicks
         document.getElementById('openApp').addEventListener('click', (e) => {
             e.preventDefault();
-            // Try to open the app using the Universal Links URL
-            window.location.href = universalLinkUrl;
+            // User-gesture launch of the custom scheme — most reliable path on iOS.
+            window.location.href = appScheme;
         });
         
         document.getElementById('downloadApp').addEventListener('click', (e) => {
